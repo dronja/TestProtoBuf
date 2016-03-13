@@ -1,0 +1,24 @@
+message Person {
+  // The customer's full name.
+  required string name = 1;
+  // The customer's ID number.
+  required int32 id = 2;
+  // Email address for the customer.
+  optional string email = 3;
+
+  enum PhoneType {
+    MOBILE = 0;
+    HOME = 1;
+    WORK = 2;
+  }
+
+  message PhoneNumber {
+    // The user's phone number.
+    required string number = 1;
+    // The type of phone stored here.
+    optional PhoneType type = 2 [default = HOME];
+  }
+
+  // A list of the user's phone numbers.
+  repeated PhoneNumber phone = 4;
+}
