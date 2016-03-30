@@ -1,0 +1,56 @@
+// [START declaration]
+syntax = "proto3";
+package tutorial;
+// [END declaration]
+
+// [START java_declaration]
+option java_package = "com.example.tutorial";
+option java_outer_classname = "AddressBookProtos";
+// [END java_declaration]
+
+// [START csharp_declaration]
+option csharp_namespace = "Google.Protobuf.Examples.AddressBook";
+// [END csharp_declaration]
+
+message GenericMessage {
+  string message_id = 1;
+  oneof content {
+    csmpMsgCommitProto  commitProto = 2;
+    csmpMsgDh1Proto     msgDH1Proto = 3;
+    csmpMsgDh2Proto     msgDH2Proto = 4;
+    csmpMsgConfirmProto macrProto   = 5;
+    csmpMsgEncrProto    encrProto   = 6;
+
+  }
+}
+
+message csmpMsgCommitProto {
+  enum Corpus {
+    nullValue = 0;
+    csmpVersionProtcol = 1;
+  }
+  Corpus corpus = 1;
+  bytes HpkiProto = 2;
+  bytes HcsProto = 3;
+}
+
+
+message csmpMsgDh1Proto {
+  bytes pkrMsgDh1Proto = 1;
+  bytes hcsMsgDh1Proto = 2;
+}
+
+message csmpMsgDh2Proto {
+  bytes pkiMsgDh2Proto = 1;
+  bytes maciMsgDh2Proto = 2;
+}
+
+message csmpMsgConfirmProto {
+  bytes macrMsgConfirmProto = 1;
+}
+
+message csmpMsgEncrProto{
+  int32 lsb16KeyIndexProto = 1;
+  bytes cipherTextProto = 2;
+  int32 cipherTextLen = 3;
+}
