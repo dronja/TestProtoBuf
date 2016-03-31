@@ -14,145 +14,26 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
+import okio.ByteString;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        final Person.PhoneNumber number = new Person.PhoneNumber.Builder()
+      /*  final Person.PhoneNumber number = new Person.PhoneNumber.Builder()
                 .number("0637195509")
                 .type(Person.PhoneType.MOBILE)
                 .build();
-        List<Person.PhoneNumber> phoneNumbers = new List<Person.PhoneNumber>() {
-            @Override
-            public void add(int location, Person.PhoneNumber object) {
-                this.add(number);
-            }
 
-            @Override
-            public boolean add(Person.PhoneNumber object) {
-                return true;
-            }
-
-            @Override
-            public boolean addAll(int location, Collection<? extends Person.PhoneNumber> collection) {
-                return false;
-            }
-
-            @Override
-            public boolean addAll(Collection<? extends Person.PhoneNumber> collection) {
-                return false;
-            }
-
-            @Override
-            public void clear() {
-
-            }
-
-            @Override
-            public boolean contains(Object object) {
-                return false;
-            }
-
-            @Override
-            public boolean containsAll(Collection<?> collection) {
-                return false;
-            }
-
-            @Override
-            public Person.PhoneNumber get(int location) {
-                return null;
-            }
-
-            @Override
-            public int indexOf(Object object) {
-                return 0;
-            }
-
-            @Override
-            public boolean isEmpty() {
-                return false;
-            }
-
-            @NonNull
-            @Override
-            public Iterator<Person.PhoneNumber> iterator() {
-                return null;
-            }
-
-            @Override
-            public int lastIndexOf(Object object) {
-                return 0;
-            }
-
-            @Override
-            public ListIterator<Person.PhoneNumber> listIterator() {
-                return null;
-            }
-
-            @NonNull
-            @Override
-            public ListIterator<Person.PhoneNumber> listIterator(int location) {
-                return null;
-            }
-
-            @Override
-            public Person.PhoneNumber remove(int location) {
-                return null;
-            }
-
-            @Override
-            public boolean remove(Object object) {
-                return false;
-            }
-
-            @Override
-            public boolean removeAll(Collection<?> collection) {
-                return false;
-            }
-
-            @Override
-            public boolean retainAll(Collection<?> collection) {
-                return false;
-            }
-
-            @Override
-            public Person.PhoneNumber set(int location, Person.PhoneNumber object) {
-                return null;
-            }
-
-            @Override
-            public int size() {
-                return 0;
-            }
-
-            @NonNull
-            @Override
-            public List<Person.PhoneNumber> subList(int start, int end) {
-                return null;
-            }
-
-            @NonNull
-            @Override
-            public Object[] toArray() {
-                return new Object[0];
-            }
-
-            @NonNull
-            @Override
-            public <T> T[] toArray(T[] array) {
-                return null;
-            }
-        };
         Person person = new Person.Builder()
                 .name("Vova")
                 .id(1)
                 .email("dr@i.ua")
-                .phone(phoneNumbers)
                 .build();
         byte[] personByte = Person.ADAPTER.encode(person);
-        Log.d("myLog","encode "+ Base64.encodeToString(personByte,Base64.DEFAULT));
+        Log.d("myLog", "encode " + Base64.encodeToString(personByte, Base64.DEFAULT));
 try {
     Person oneMan = Person.ADAPTER.decode(personByte);
     Log.d("myLog","name "+oneMan.name);
@@ -160,6 +41,31 @@ try {
 }catch (IOException e){
     Log.e("myLog", e.getLocalizedMessage());
 }
+*/
+
+       csmpMsgCommitProto.Corpus corpus = csmpMsgCommitProto.Corpus.fromValue(2);
+        byte[] b = {'1','2','3','4','5','6','7','8'};
+       csmpMsgCommitProto csmpMsgCommitProto = new csmpMsgCommitProto.Builder()
+               .corpus(corpus)
+               .HpkiProto(ByteString.of(b, 0, 8))
+               .HcsProto(ByteString.of(new byte[8], 0, 8))
+               .build();
+
+            GenericMessage genericMessage = new GenericMessage.Builder()
+                    .message_id("123")
+                    .commitProto(csmpMsgCommitProto)
+                    .build();
+        byte[] message = GenericMessage.ADAPTER.encode(genericMessage);
+        Log.d("myLog", Base64.encodeToString(message,Base64.DEFAULT));
+
+        try {
+            GenericMessage message1 = GenericMessage.ADAPTER.decode(message);
+            byte[] gf = message1.commitProto.HpkiProto.toByteArray();
+            Log.d("myLog", new String(gf));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
 
     }
 }
